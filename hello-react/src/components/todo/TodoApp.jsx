@@ -1,31 +1,54 @@
 /** @format */
 
+import { useEffect, useState } from "react";
 import TodoAppender from "./TodoAppender.jsx";
 import TodoHeader from "./TodoHeader.jsx";
-import TodoItem from "./TodoItem.jsx";
+import TodoList from "./TodoList.jsx";
+import { loadAllTodos } from "../../api/todo/todoApi.js";
 
 export default function TodoApp() {
-  const todoItems = [];
+  console.log("TodoApp 실행됨.");
+  const [todos, setTodos] = useState([]);
+
+  // TODO 목록을 API를 통해 얻어온다.
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    let ignoreUpdateState = false;
+    console.log(1, ignoreUpdateState);
+    const loadTodoList = async () => {
+      console.log(2, ignoreUpdateState);
+      try {
+        const todoList = await loadAllTodos(abortController);
+        if (!ignoreUpdateState) {
+          setTodos(todoList);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    loadTodoList();
+
+    return () => {
+      console.log("componentWillUnmount");
+      ignoreUpdateState = true;
+      abortController.abort();
+    };
+  }, []);
+
+  const taskCountInfo = {
+    all: todos.length,
+    done: todos.filter((todo) => todo.done).length,
+  };
 
   return (
     <div className="wrapper">
       <header>React Todo</header>
       <ul className="tasks">
-        <TodoHeader />
-        <TodoItem
-          dueDate="2026-10-19"
-          id="todo_1"
-          title="React Component Master"
-          priority="1"
-        />
-        <TodoItem
-          dueDate="2026-10-20"
-          id="todo_2"
-          title="Array.map() 함수 사용하기"
-          priority="1"
-        />
+        <TodoHeader onChangeDone={setTodos} count={taskCountInfo} />
+        <TodoList todoList={todos} onChangeDone={setTodos} />
       </ul>
-      <TodoAppender />
+      <TodoAppender onClickSave={setTodos} />
     </div>
   );
 }
