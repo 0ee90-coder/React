@@ -1,10 +1,10 @@
 /** @format */
 
-export const loadAllTodos = async (abortController) => {
+import { host } from "../common";
+
+export const loadAllTodos = async () => {
   try {
-    const fetchResult = await fetch("http://192.168.211.11:8888/api/v1/task", {
-      signal: abortController.signal,
-    });
+    const fetchResult = await fetch(`${host}:8888/api/v1/task`);
     if (!fetchResult.ok) {
       throw Error("잘못된 요청입니다.");
     }
@@ -17,7 +17,7 @@ export const loadAllTodos = async (abortController) => {
 
 export const addTodo = async (newTodo) => {
   try {
-    const fetchResult = await fetch("http://192.168.211.11:8888/api/v1/task", {
+    const fetchResult = await fetch(`${host}:8888/api/v1/task`, {
       method: "post",
       body: JSON.stringify(newTodo),
       headers: { "Content-Type": "application/json" },
@@ -34,10 +34,9 @@ export const addTodo = async (newTodo) => {
 
 export const doneOneTodo = async (todoId) => {
   try {
-    const fetchResult = await fetch(
-      `http://192.168.211.11:8888/api/v1/task/${todoId}`,
-      { method: "put" },
-    );
+    const fetchResult = await fetch(`${host}:8888/api/v1/task/${todoId}`, {
+      method: "put",
+    });
     if (!fetchResult.ok) {
       throw Error("잘못된 요청입니다.");
     }
@@ -50,7 +49,7 @@ export const doneOneTodo = async (todoId) => {
 
 export const doneAllTodos = async () => {
   try {
-    const fetchResult = await fetch("http://192.168.211.11:8888/api/v1/task", {
+    const fetchResult = await fetch(`${host}:8888/api/v1/task`, {
       method: "put",
     });
     if (!fetchResult.ok) {

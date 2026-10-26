@@ -7,6 +7,7 @@ import ManagementVariables from "../../tests/ManagementVariables.jsx";
 import Person from "../../tests/Person.jsx";
 import ListApp from "../../tests/List.jsx";
 import StateTest from "../../tests/State.jsx";
+import ArticleApp from "../articles/article/ArticleApp.jsx";
 
 export default function Navigator() {
   const componentMap = {
@@ -16,6 +17,7 @@ export default function Navigator() {
     Person: <Person />,
     ListApp: <ListApp />,
     StateTest: <StateTest />,
+    ArticleApp: <ArticleApp />,
   };
 
   const [item, setItem] = useState("TodoApp");
@@ -63,6 +65,12 @@ export default function Navigator() {
           onClick={onClickButtonHandler.bind(this, "StateTest")}
         >
           StateTest
+        </button>
+        <button
+          type="button"
+          onClick={onClickButtonHandler.bind(this, "ArticleApp")}
+        >
+          ArticleApp
         </button>
       </div>
       <div>{componentMap[item]}</div>

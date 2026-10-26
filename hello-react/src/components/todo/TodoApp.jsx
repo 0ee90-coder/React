@@ -12,14 +12,12 @@ export default function TodoApp() {
 
   // TODO 목록을 API를 통해 얻어온다.
   useEffect(() => {
-    const abortController = new AbortController();
-
     let ignoreUpdateState = false;
     console.log(1, ignoreUpdateState);
     const loadTodoList = async () => {
       console.log(2, ignoreUpdateState);
       try {
-        const todoList = await loadAllTodos(abortController);
+        const todoList = await loadAllTodos();
         if (!ignoreUpdateState) {
           setTodos(todoList);
         }
@@ -30,9 +28,8 @@ export default function TodoApp() {
     loadTodoList();
 
     return () => {
-      console.log("componentWillUnmount");
+      console.log("TodoApp componentWillUnmount");
       ignoreUpdateState = true;
-      abortController.abort();
     };
   }, []);
 
