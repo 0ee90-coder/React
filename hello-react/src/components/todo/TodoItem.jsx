@@ -1,9 +1,10 @@
 /** @format */
 
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import Confirm from "../modals/Confirm";
 import Message from "../modals/Message";
-import { doneOneTodo, loadAllTodos } from "../../api/todo/todoApi";
+import { doneOneTodo } from "../../api/todo/todoApi";
+import { TodoListContext } from "./TodoList";
 
 export default function TodoItem({
   id,
@@ -13,6 +14,7 @@ export default function TodoItem({
   done,
   temp,
   onChangeDone,
+  refreshTodoList,
 }) {
   const priorityMap = {
     1: "높음",
@@ -48,8 +50,9 @@ export default function TodoItem({
     const requestDoneFetch = async () => {
       try {
         await doneOneTodo(id);
-        const todoList = await loadAllTodos();
-        onChangeDone(todoList);
+        // const todoList = await loadAllTodos();
+        // onChangeDone(todoList);
+        refreshTodoList();
       } catch (e) {
         console.log(e);
 
@@ -79,6 +82,11 @@ export default function TodoItem({
   const onClickConfirmCancelHandler = () => {
     confirmRef.current.close();
   };
+
+  const { tagName } = useContext(TodoListContext);
+  if (tagName !== "TodoList") {
+    return <div>잘못된 컴포넌트 위치입니다.</div>;
+  }
 
   return (
     <li className={`task-item ${done ? "done-todo" : ""}`}>

@@ -1,10 +1,16 @@
-import { useRef, useState } from "react";
-import { loginApi } from "../../../api/member/memberApi";
+/** @format */
 
-export default function ArticleApp() {
+import { useContext, useRef, useState } from "react";
+import { loginApi } from "../../../api/member/memberApi.js";
+import { LoginContext } from "../../../contexts/LoginContext.jsx";
+
+export default function Login() {
+  const { login } = useContext(LoginContext);
+
+  const [showLoginForm, setShowLoginForm] = useState(false);
+
   const emailRef = useRef();
   const passwordRef = useRef();
-  const [showLoginForm, setShowLoginForm] = useState(false);
 
   const onClickLoginButtonHandler = () => {
     const email = emailRef.current.value;
@@ -13,6 +19,10 @@ export default function ArticleApp() {
     (async () => {
       const loginResult = await loginApi({ email, password });
       console.log(loginResult);
+      if (loginResult === undefined) {
+        // 로그인 성공.
+        login();
+      }
     })();
   };
 

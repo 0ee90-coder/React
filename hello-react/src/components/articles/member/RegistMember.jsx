@@ -1,9 +1,12 @@
-import { useRef } from "react";
-import { signUpApi } from "../../../api/member/memberApi";
+/** @format */
+
+import { useRef, useState } from "react";
+import { signUpApi } from "../../../api/member/memberApi.js";
 
 export default function RegistMember() {
-  const [signUpError, setSignUpError] = useState({});
   const [showSignUpForm, setShowSignUpForm] = useState(false);
+  const [signUpError, setSignUpError] = useState({});
+
   const emailRef = useRef();
   const passwordRef = useRef();
   const nameRef = useRef();
@@ -34,62 +37,55 @@ export default function RegistMember() {
       }
     })();
   };
-
   return (
-    <>
-      <div>
-        {!showSignUpForm && (
-          <button type="button" onClick={setShowSignUpForm.bind(this, true)}>
+    <div>
+      {!showSignUpForm && (
+        <button type="button" onClick={setShowSignUpForm.bind(this, true)}>
+          회원가입
+        </button>
+      )}
+      {showSignUpForm && (
+        <div>
+          <div>
+            <input
+              type="text"
+              placeholder="이메일을 입력하세요."
+              ref={emailRef}
+            />
+            {signUpError.email &&
+              signUpError.email.map((e) => <div key={e}>{e}</div>)}
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="비밀번호를 입력하세요."
+              ref={passwordRef}
+            />
+            {signUpError.password &&
+              signUpError.password.map((e) => <div key={e}>{e}</div>)}
+          </div>
+          <div>
+            <input type="text" placeholder="이름을 입력하세요." ref={nameRef} />
+            {signUpError.name &&
+              signUpError.name.map((e) => <div key={e}>{e}</div>)}
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="닉네임을 입력하세요."
+              ref={nicknameRef}
+            />
+            {signUpError.nickname &&
+              signUpError.nickname.map((e) => <div key={e}>{e}</div>)}
+          </div>
+          <button type="button" onClick={onClickSignUpButtonHandler}>
             회원가입
           </button>
-        )}
-        {showSignUpForm && (
-          <div>
-            <div>
-              <input
-                type="text"
-                placeholder="이메일을 입력하세요."
-                ref={emailRef}
-              />
-              {signUpError.email &&
-                signUpError.email.map((e) => <div key={e}>{e}</div>)}
-            </div>
-            <div>
-              <input
-                type="password"
-                placeholder="비밀번호를 입력하세요."
-                ref={passwordRef}
-              />
-              {signUpError.password &&
-                signUpError.password.map((e) => <div key={e}>{e}</div>)}
-            </div>
-            <div>
-              <input
-                type="text"
-                placeholder="이름을 입력하세요."
-                ref={nameRef}
-              />
-              {signUpError.name &&
-                signUpError.name.map((e) => <div key={e}>{e}</div>)}
-            </div>
-            <div>
-              <input
-                type="text"
-                placeholder="닉네임을 입력하세요."
-                ref={nicknameRef}
-              />
-              {signUpError.nickname &&
-                signUpError.nickname.map((e) => <div key={e}>{e}</div>)}
-            </div>
-            <button type="button" onClick={onClickSignUpButtonHandler}>
-              회원가입
-            </button>
-            <button type="button" onClick={setShowSignUpForm.bind(this, false)}>
-              취소
-            </button>
-          </div>
-        )}
-      </div>
-    </>
+          <button type="button" onClick={setShowSignUpForm.bind(this, false)}>
+            취소
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

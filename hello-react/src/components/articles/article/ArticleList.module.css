@@ -1,0 +1,8 @@
+/** @format */
+.articleListGrid {
+  display: grid;
+  /*                     id    sub                 nic                date  reco view */
+  grid-template-columns:
+    160px minmax(150px, 1fr) minmax(80px, auto)
+    160px 80px 80px;
+}

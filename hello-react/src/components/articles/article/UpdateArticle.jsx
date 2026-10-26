@@ -1,22 +1,21 @@
+/** @format */
+
 import { useRef } from "react";
 import {
   readOneArticle,
   searchArticles,
-} from "../../../api/article/articleApi";
+  updateArticle,
+} from "../../../api/article/articleApi.js";
 
-export default function updateArticle() {
-  const [showArticleUpdate, setShowArticleUpdate] = useState();
-  const [articles, setArticles] = useState();
-  const [showArticle, setShowArticle] = useState();
-
-  const filesRef = useRef();
+export default function UpdateArticle({
+  showArticleUpdate,
+  setShowArticleUpdate,
+  setShowArticle,
+  setArticles,
+}) {
   const subjectRef = useRef();
   const contentRef = useRef();
-
-  const onClickArticleUpdateCancelButtonHandler = (article) => {
-    setShowArticle(article);
-    setShowArticleUpdate(undefined);
-  };
+  const filesRef = useRef();
 
   const onClickArticleUpdateSaveButtonHandler = () => {
     // 사용자가 입력한 제목을 가져온다.
@@ -50,6 +49,11 @@ export default function updateArticle() {
         // 케이스 확인 후 처리 필요.
       }
     })();
+  };
+
+  const onClickArticleUpdateCancelButtonHandler = (article) => {
+    setShowArticle(article);
+    setShowArticleUpdate(undefined);
   };
 
   return (

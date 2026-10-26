@@ -1,16 +1,19 @@
+/** @format */
+
+import { useRef, useState } from "react";
 import {
   registNewArticle,
   searchArticles,
-} from "../../../api/article/articleApi";
+} from "../../../api/article/articleApi.js";
 
-export default function RegistArticle() {
-  const [articles, setArticles] = useState();
-  const [registArticleError, setRegistArticleError] = useState({});
+export default function RegistArticle({ setArticles }) {
   const [showWriteForm, setShowWriteForm] = useState(false);
+  const [registArticleError, setRegistArticleError] = useState({});
 
   const subjectRef = useRef();
   const contentRef = useRef();
   const filesRef = useRef();
+
   const onClickArticleSaveButtonHandler = () => {
     setRegistArticleError({});
 
@@ -37,10 +40,12 @@ export default function RegistArticle() {
       }
     })();
   };
+
   const onClickArticleSaveCancelButtonHandler = () => {
     setRegistArticleError({});
     setShowWriteForm(false);
   };
+
   return (
     <div>
       {!showWriteForm && (

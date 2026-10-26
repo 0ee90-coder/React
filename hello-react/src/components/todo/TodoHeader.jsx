@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import Confirm from "../modals/Confirm";
-import { doneAllTodos, loadAllTodos } from "../../api/todo/todoApi";
+import { doneAllTodos } from "../../api/todo/todoApi";
 
-export default function TodoHeader({ onChangeDone, count }) {
+export default function TodoHeader({ onChangeDone, count, refreshTodoList }) {
   const confirmRef = useRef();
   const checkboxRef = useRef();
 
@@ -33,8 +33,9 @@ export default function TodoHeader({ onChangeDone, count }) {
     const reqeustAllDone = async () => {
       try {
         await doneAllTodos();
-        const todoList = await loadAllTodos();
-        onChangeDone(todoList);
+        // const todoList = await loadAllTodos();
+        // onChangeDone(todoList);
+        refreshTodoList();
       } catch (e) {
         console.log(e);
         // 낙관적 업데이트 취소.

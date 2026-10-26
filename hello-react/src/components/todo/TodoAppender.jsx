@@ -2,9 +2,9 @@
 
 import { useRef } from "react";
 import Message from "../modals/Message";
-import { addTodo, loadAllTodos } from "../../api/todo/todoApi";
+import { addTodo } from "../../api/todo/todoApi";
 
-export default function TodoAppender({ onClickSave }) {
+export default function TodoAppender({ onClickSave, refreshTodoList }) {
   const options = [
     { value: "1", text: "높음" },
     { value: "2", text: "보통" },
@@ -66,8 +66,9 @@ export default function TodoAppender({ onClickSave }) {
     const requestAddNewTodo = async () => {
       try {
         await addTodo(newTodo);
-        const todoList = await loadAllTodos();
-        onClickSave(todoList);
+        // const todoList = await loadAllTodos();
+        // onClickSave(todoList);
+        refreshTodoList();
       } catch (e) {
         console.log(e);
         messageRef.current.open(

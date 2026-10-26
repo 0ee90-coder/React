@@ -1,18 +1,40 @@
-import { Fragment } from "react";
-import Loading from "../../common_ui/Loading";
-import style from "./ArticleApp.module.css";
+/** @format */
+import style from "./ArticleList.module.css";
+
+import { Fragment, useEffect } from "react";
+import Loading from "../../common_ui/Loading.jsx";
 import {
   readOneArticle,
   searchArticles,
-} from "../../../api/article/articleApi";
-import { readAllReplies } from "../../../api/reply/replyApi";
+} from "../../../api/article/articleApi.js";
+// import { readAllReplies } from "../../../api/reply/replyApi.js";
 
-export default function ArticleList() {
-  const [articles, setArticles] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRepliesLoading, setIsRepliesLoading] = useState(false);
-  const [replies, setReplies] = useState();
-  const [showArticle, setShowArticle] = useState();
+export default function ArticleList({
+  isLoading,
+  setIsLoading,
+  articles,
+  setArticles,
+  setShowArticle,
+  // setReplies,
+  // setIsRepliesLoading,
+}) {
+  useEffect(() => {
+    let ignoreUpdateState = false;
+    //   const fetchArticles = async () => {};
+    //   fetchArticles();
+    (async () => {
+      const articleList = await searchArticles();
+      if (!ignoreUpdateState) {
+        setIsLoading(false);
+        console.log(articleList);
+        setArticles(articleList);
+      }
+    })();
+
+    return () => {
+      ignoreUpdateState = true;
+    };
+  }, []);
 
   const onClickArticleItemHandler = (articleId) => {
     (async () => {
@@ -27,12 +49,13 @@ export default function ArticleList() {
         return newState;
       });
 
-      setIsRepliesLoading(false);
-      const repliesList = await readAllReplies(articleId);
-      setReplies(repliesList);
-      setIsRepliesLoading(true);
+      // setIsRepliesLoading(false);
+      // const repliesList = await readAllReplies(articleId);
+      // setReplies(repliesList);
+      // setIsRepliesLoading(true);
     })();
   };
+
   const onClickMoreButtonHandler = () => {
     // 현재 페이지 번호 가져오기. (paginate.pageNo)
     const pageNo = articles.paginate.pageNo;
@@ -69,6 +92,7 @@ export default function ArticleList() {
       })();
     }
   };
+
   return (
     <div className={style.articleListGrid}>
       <div>ID</div>
